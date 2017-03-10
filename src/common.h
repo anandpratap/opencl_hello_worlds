@@ -8,6 +8,7 @@
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
+#include <chrono>
 #include <math.h>
 #include <cstring>
 #include "CL/opencl.h"
@@ -20,6 +21,23 @@ void check_null(T x, std::string message){
 		spd::get("console")->error("{}", message);
 		std::terminate();
 	};
+};
+
+
+class Timer {
+public:
+    Timer() {
+        reset();
+    }
+    void reset() {
+        m_timestamp = std::chrono::high_resolution_clock::now();
+    }
+    float diff() {
+        std::chrono::duration<float> fs = std::chrono::high_resolution_clock::now() - m_timestamp;
+        return fs.count();
+    }
+private:
+    std::chrono::high_resolution_clock::time_point m_timestamp;
 };
 #include "utils.h"
 #endif
