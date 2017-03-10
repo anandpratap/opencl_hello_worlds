@@ -18,5 +18,6 @@ public:
 	unsigned char* data(void);
 	cl_kernel get(void);
 	void create_program(Context& context, DeviceManager& device_manager);
+	cl_int set_arg(cl_uint arg_index, size_t arg_size, const void *arg_value);
 };
 #endif

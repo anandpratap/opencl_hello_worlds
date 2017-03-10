@@ -10,6 +10,9 @@ private:
 public:
 	Queue(Context& icontext, DeviceManager& idevice_manager);
 	cl_command_queue get(void);
-	cl_int enqueue_ndrange(Kernel& kernel, cl_uint ndim, size_t *global_work_size, size_t *local_work_size, bool iblock=true);
+	void ndrange_kernel(cl_kernel kernel, cl_uint work_dim, const size_t *global_work_offset, const size_t *global_work_size, const size_t *local_work_size, cl_uint num_events_in_wait_list, const cl_event *event_wait_list, cl_event *event);
+	void write_buffer(cl_mem buffer, cl_bool blocking_write, size_t offset, size_t size, const void *ptr, cl_uint num_events_in_wait_list, const cl_event *event_wait_list, cl_event *event);
+	void read_buffer(cl_mem buffer, cl_bool blocking_read, size_t offset, size_t size, void *ptr, cl_uint num_events_in_wait_list, const cl_event *event_wait_list, cl_event *event);
+	void finish(void);
 };
 #endif

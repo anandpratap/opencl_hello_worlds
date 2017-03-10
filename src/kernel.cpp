@@ -36,11 +36,17 @@ void Kernel::create_program(Context& context, DeviceManager& device_manager){
 	std::string rawname = m_filename.substr(0, lastindex);
 	const char *name = rawname.c_str();
 	m_kernel = clCreateKernel(m_program, name, &status);
-		check_error(status, "Failed to create kernel");
+	check_error(status, "Failed to create kernel");
 };
 
 cl_kernel Kernel::get(void){
 	return m_kernel;
 }
 
+
+cl_int Kernel::set_arg(cl_uint arg_index, size_t arg_size, const void *arg_value){
+	auto status = clSetKernelArg(get(), arg_index, arg_size, arg_value);
+	auto error_string = fmt::format("Cannot set arg {}", arg_index);
+	check_error(status, error_string);
+}
 #endif

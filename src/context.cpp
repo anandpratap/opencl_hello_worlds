@@ -13,4 +13,11 @@ cl_context Context::get(void){
 	return m_context;
 };
 
+cl_mem Context::create_buffer(cl_mem_flags flags, size_t size, void *host_ptr){
+	cl_int status;
+	auto buffer = clCreateBuffer(get(), flags, size, host_ptr, &status);
+	auto error_string = fmt::format("Cannot create buffer");
+	check_error(status, error_string);
+	return buffer;
+};
 #endif

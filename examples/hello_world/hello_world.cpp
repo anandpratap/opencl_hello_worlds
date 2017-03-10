@@ -10,11 +10,9 @@ int main(int argc, char **argv){
 	kernel.create_program(context, device_manager);
 	auto queue = Queue(context, device_manager);
 
-	cl_uint ndim = 1;
+	cl_uint work_dim = 1;
 	size_t global_work_size[] = {3, 1, 1};
-	size_t local_work_size[] = {3, 1, 1};
-	bool block = true;
-	queue.enqueue_ndrange(kernel, ndim, global_work_size, local_work_size, block);
-	queue.enqueue_ndrange(kernel, ndim, global_work_size, local_work_size, block);
+	queue.ndrange_kernel(kernel.get(), work_dim, nullptr, global_work_size, nullptr, 0, nullptr, nullptr);
+	queue.finish();
 	return 0;
 }
