@@ -19,6 +19,7 @@ libpath.append(os.path.join(__root, "hls/host/linux64/lib"))
 libpath.append(os.path.join(altera_root, "board/dspba_sil_pcie/linux64/lib"))
 libpath.append(os.path.join(altera_root, "host/linux64/lib"))
 
+libs.append("z")
 libs.append("rt")
 libs.append("pthread")
 
@@ -34,7 +35,7 @@ if GetOption("enable_debug"):
 else:
     ccflags.append("-O3")
 
-srcs = ["utils.cpp", "device.cpp", "kernel.cpp", "context.cpp", "queue.cpp"]
+srcs = ["utils.cpp", "device.cpp", "kernel.cpp", "context.cpp", "queue.cpp", "../thirdparty/cnpy.cpp"]
 main = ["opencl_wrapper"]
 
 env = Environment(CXX = cxx, CCFLAGS = ccflags, CPPPATH = cpppath, LIBPATH=libpath, LIBS=libs, ENV=os.environ)

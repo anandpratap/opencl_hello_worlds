@@ -5,4 +5,5 @@
 #include "context.h"
 #include "kernel.h"
 #include "queue.h"
+#include "cnpy.h"
 #endif
