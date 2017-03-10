@@ -13,6 +13,7 @@ private:
 	cl_kernel m_kernel;
 public:
 	Kernel(std::string ifilename, bool iload = true);
+	~Kernel();
 	void load(void);
 	size_t size(void);
 	unsigned char* data(void);

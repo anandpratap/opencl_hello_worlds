@@ -9,6 +9,7 @@ private:
 	cl_command_queue m_queue;
 public:
 	Queue(Context& icontext, DeviceManager& idevice_manager);
+	~Queue();
 	cl_command_queue get(void);
 	void ndrange_kernel(cl_kernel kernel, cl_uint work_dim, const size_t *global_work_offset, const size_t *global_work_size, const size_t *local_work_size, cl_uint num_events_in_wait_list, const cl_event *event_wait_list, cl_event *event);
 	void write_buffer(cl_mem buffer, cl_bool blocking_write, size_t offset, size_t size, const void *ptr, cl_uint num_events_in_wait_list, const cl_event *event_wait_list, cl_event *event);

@@ -10,6 +10,10 @@ Queue::Queue(Context& icontext, DeviceManager& idevice_manager){
 	check_error(status, "Cannot create queue.");
 };
 
+Queue::~Queue(){
+	clReleaseCommandQueue(get());
+};
+
 cl_command_queue Queue::get(void){
 	return m_queue;
 };

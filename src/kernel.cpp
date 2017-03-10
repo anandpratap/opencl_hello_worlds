@@ -6,6 +6,12 @@ Kernel::Kernel(std::string ifilename, bool iload): m_filename(ifilename){
 	if(iload)
 		load();
 };
+
+Kernel::~Kernel(){
+	clReleaseProgram(m_program);
+	clReleaseKernel(get());
+}
+
 void Kernel::load(void){
 	std::ifstream kernel_file(m_filename, std::ios::in | std::ios::binary);
 	m_buffer = std::vector<char>((std::istreambuf_iterator<char>(kernel_file)),

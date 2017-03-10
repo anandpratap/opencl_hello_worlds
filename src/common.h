@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iterator>
 #include <vector>
+#include <list>
 #include <stdio.h>
 #include <stdlib.h>
 #include <chrono>
