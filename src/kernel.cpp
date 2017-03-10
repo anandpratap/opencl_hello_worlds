@@ -22,17 +22,19 @@ void Kernel::create_program(Context& context, DeviceManager& device_manager){
 	cl_int status;
 	unsigned char* binaries[] = {data()};
 	size_t binaries_size[] = {size()};
-	
+
 	std::vector<cl_int> binary_status(device_manager.ndevices());
 	m_program = clCreateProgramWithBinary(context.get(), device_manager.ndevices(),
 										  device_manager.devices(), binaries_size,
 										  (const unsigned char **) binaries, binary_status.data(), &status);
 	check_error(status, "Failed to create program with binary");
-	
+
 	status = clBuildProgram(m_program, 0, NULL, "", NULL, NULL);
 	check_error(status, "Failed to build program");
-	
-	const char *name = "hello_world";
+
+	size_t lastindex = m_filename.find_last_of(".");
+	std::string rawname = m_filename.substr(0, lastindex);
+	const char *name = rawname.c_str();
 	m_kernel = clCreateKernel(m_program, name, &status);
 		check_error(status, "Failed to create kernel");
 };
