@@ -1,0 +1,52 @@
+import subprocess as sp
+import os
+altera_root = os.environ["ALTERAOCLSDKROOT"]
+__root = os.environ["__ROOT"]
+
+AddOption("--enable-debug", action="store_true", dest="enable_debug", default=False)
+AddOption("--run", action="store_true", dest="run", default=False)
+
+
+cxx = "g++"
+
+ccflags = ["-Wl,--no-as-needed"]
+
+libs = ["altera_sil_mmd", "alteracl", "elf", "opencl_wrapper"]
+libpath = []
+cpppath = []
+
+libpath.append(os.path.join(__root, "hls/host/linux64/lib"))
+libpath.append(os.path.join(altera_root, "board/dspba_sil_pcie/linux64/lib"))
+libpath.append(os.path.join(altera_root, "host/linux64/lib"))
+libpath.append("../../src")
+
+libs.append("z")
+libs.append("rt")
+libs.append("pthread")
+
+cpppath.append(os.path.join(__root, "hls/host/include"))
+cpppath.append("../../")
+cpppath.append("../../thirdparty")	
+ccflags.append("-std=c++11")
+ccflags.append("-fPIC")
+
+if GetOption("enable_debug"):
+    ccflags.append("-O0")
+    ccflags.append("-g")
+    ccflags.append("-DDEBUG")
+else:
+    ccflags.append("-O3")
+
+srcs = ["convection.cpp"]
+main = ["hello"]
+
+aoc_builder = Builder(action = 'aoc  -march=emulator $SOURCE -o $TARGET --board s5gs_devkit')
+env = Environment(CXX = cxx, CCFLAGS = ccflags, CPPPATH = cpppath, LIBPATH=libpath, LIBS=libs, ENV=os.environ, BUILDERS={"aoc": aoc_builder})
+env.VariantDir('build', '.', duplicate=0)
+env.Program(main, srcs)
+env.aoc("convection.aocx", "convection.cl")
+
+if GetOption("run"):
+    run_cmd = env.Command("run", [], "CL_CONTEXT_EMULATOR_DEVICE_ALTERA=1 ./hello")
+    Depends(run_cmd, DEFAULT_TARGETS)
+
