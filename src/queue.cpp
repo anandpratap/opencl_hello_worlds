@@ -6,7 +6,7 @@
 #include "kernel.h"
 Queue::Queue(Context& icontext, DeviceManager& idevice_manager){
 	cl_int status;
-	m_queue = clCreateCommandQueueWithProperties(icontext.context(), idevice_manager.devices()[0], 0, &status);
+	m_queue = clCreateCommandQueueWithProperties(icontext.get(), idevice_manager.devices()[0], 0, &status);
 	check_error(status, "Cannot create queue.");
 };
 

@@ -9,7 +9,7 @@ private:
 	cl_context m_context;
 public:
 	Context(DeviceManager& idevice_manager);
-	cl_context context(void);
+	cl_context get(void);
 };
 
 #endif

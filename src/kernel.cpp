@@ -24,7 +24,7 @@ void Kernel::create_program(Context& context, DeviceManager& device_manager){
 	size_t binaries_size[] = {size()};
 	
 	std::vector<cl_int> binary_status(device_manager.ndevices());
-	m_program = clCreateProgramWithBinary(context.context(), device_manager.ndevices(),
+	m_program = clCreateProgramWithBinary(context.get(), device_manager.ndevices(),
 										  device_manager.devices(), binaries_size,
 										  (const unsigned char **) binaries, binary_status.data(), &status);
 	check_error(status, "Failed to create program with binary");

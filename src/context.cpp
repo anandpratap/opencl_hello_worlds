@@ -9,7 +9,7 @@ Context::Context(DeviceManager& idevice_manager): m_device_manager(idevice_manag
 	spd::get("console")->info("Created context");
 };
 
-cl_context Context::context(void){
+cl_context Context::get(void){
 	return m_context;
 };
 
