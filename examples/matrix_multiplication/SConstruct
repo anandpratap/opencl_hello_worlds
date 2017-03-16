@@ -1,0 +1,30 @@
+import os, sys
+sys.path.append("../../src/")
+
+from build_config import libpath, cpppath, libs, ccflags, cxx, ccflags_debug, ccflags_optimize, aoc_builder
+import subprocess as sp
+
+AddOption("--enable-debug", action="store_true", dest="enable_debug", default=False)
+AddOption("--run", action="store_true", dest="run", default=False)
+
+if GetOption("enable_debug"):
+    ccflags.extend(ccflags_debug)
+else:
+    ccflags.extend(ccflags_optimize)
+
+cpppath.append("../../thirdparty")
+cpppath.append("../../")
+libpath.append("../../src")
+libs.append("opencl_api")
+
+srcs = ["matmult.cpp"]
+target = ["matmult.bin"]
+
+env = Environment(CXX = cxx, CCFLAGS = ccflags, CPPPATH = cpppath, LIBPATH=libpath, LIBS=libs, ENV=os.environ, BUILDERS={"aoc": aoc_builder})
+env.Program(target, srcs)
+env.aoc("matmult.aocx", "matmult.cl")
+
+if GetOption("run"):
+    run_cmd = env.Command("run", [], "CL_CONTEXT_EMULATOR_DEVICE_ALTERA=1 ./matmult.bin")
+    Depends(run_cmd, DEFAULT_TARGETS)
+
