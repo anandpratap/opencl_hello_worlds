@@ -95,9 +95,6 @@ int main(int argc, char **argv){
 	cl_event event_copy;
 	queue.write_buffer(u_buffer, CL_FALSE, 0, size*sizeof(float), convection.u, 0, nullptr, &event_copy);
 
-	kernel.set_arg(0, sizeof(int), &convection.m_nx);
-	kernel.set_arg(1, sizeof(int), &convection.m_ny);
-
 	/* ---- */
 	queue.finish();
 	cl_uint work_dim = 1;
@@ -105,13 +102,13 @@ int main(int argc, char **argv){
 	auto device_timer = Timer();
 	for(int i=0; i<nstep; i++){
 		if(i%2 == 0){
-			kernel.set_arg(2, sizeof(cl_mem), &u_buffer);
-			kernel.set_arg(3, sizeof(cl_mem), &u2_buffer);
+			kernel.set_arg(0, sizeof(cl_mem), &u_buffer);
+			kernel.set_arg(1, sizeof(cl_mem), &u2_buffer);
 		}
 
 		else{
-			kernel.set_arg(3, sizeof(cl_mem), &u_buffer);
-			kernel.set_arg(2, sizeof(cl_mem), &u2_buffer);
+			kernel.set_arg(1, sizeof(cl_mem), &u_buffer);
+			kernel.set_arg(0, sizeof(cl_mem), &u2_buffer);
 		}
 		queue.ndrange_kernel(kernel.get(), work_dim, nullptr, global_work_size, nullptr, 0, nullptr, nullptr);
 	}
