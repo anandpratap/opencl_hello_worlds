@@ -4,8 +4,12 @@
 #include "kernel.h"
 DeviceManager::DeviceManager(): m_platform(nullptr){
 	cl_int status;
-	
-		m_platform = findPlatform("Intel(R) FPGA");
+
+#if defined(USE_ALTERA_SDK)
+	m_platform = findPlatform("Altera SDK for OpenCL");
+#else
+	m_platform = findPlatform("Intel(R) FPGA");
+#endif
 		check_null(m_platform, "Unable to find Intel(R) FPGA OpenCL platform!");
 
 		auto console = spd::get("console");

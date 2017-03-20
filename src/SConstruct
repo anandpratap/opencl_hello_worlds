@@ -6,8 +6,11 @@ import subprocess as sp
 
 
 AddOption("--enable-debug", action="store_true", dest="enable_debug", default=False)
+AddOption("--old-release", action="store_true", dest="old_release", default=False)
 
-
+if GetOption("old_release"):
+    ccflags.append("-DUSE_ALTERA_SDK")
+	
 if GetOption("enable_debug"):
     ccflags.extend(ccflags_debug)
 else:
